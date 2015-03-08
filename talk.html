@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>留言板</title>
+    <link rel="stylesheet" type="text/css" href="css/talk.css">
+</head>
+<body>
+<div class="page">
+    <div id="show">
+        <div class="show_login">
+            <img id="close" src="img/close.png">
+            <h3>登录</h3>
+            <form id="form_login" action="#" autocomplete="on" method="post">
+                <div class="user">
+                    <img src="img/iconfont-yonghu%20(1).png">
+                    <input id="username" name="name" type="text" value="账号">
+                </div>
+                <div class="password">
+                    <img src="img/iconfont-mima.png">
+                    <input id="password" name="password" type="text" value="密码">
+                </div>
+                <input class="sub" type="submit" value="登录" >
+            </form>
+        </div>
+    </div>
+    <div id="upload">
+        <div class="show_upload">
+            <img id="close_2" src="img/close.png">
+            <h3>作品上传</h3>
+            <div class="upLoad_content">
+                <form id="up_form" action="#" enctype="multipart/form-data" method="post">
+                    <div class="up_content">
+                        <div class="up_box">
+                            <div id="up_txt"></div>
+                            <div class="up_button">浏览..</div>
+                            <input id="up_file" name="file" type="file">
+                        </div>
+                        <input class="up_submit" type="submit" value="上传">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="login">
+        <div class="login_content">
+            <div id="user_1">
+                <div id="user_login">用户登录</div>
+                <a href="#"><div id="user_register">用户注册</div>
+                </a>
+            </div>
+            <div id="user_2">
+                <div id="user_name">用户名</div>
+                <a href="#"><div id="user_quit">注销</div>
+                </a>
+                <div id="user_upload">作品上传</div>
+            </div>
+        </div>
+        <div class="login_line"></div>
+    </div>
+    <div class="head_x">
+        <div class="head">
+            <img src="img/logo.png" class="logo">
+            <div class="nav">
+                <ul>
+                    <li>
+                        <a href="#"><div>首页</div></a>
+                    </li>
+                    <li>
+                        <a href="#"><div>聚焦大挑</div></a>
+                    </li>
+                    <li>
+                        <a href="#"><div>新闻报道</div></a>
+                    </li>
+                    <li>
+                        <a href="#"><div>参赛报名</div></a>
+                    </li>
+                    <li>
+                        <a href="#"><div>下载专区</div></a>
+                    </li>
+                    <li class="local">
+                        <a href="#"><div>留言板</div></a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="content">
+
+        <div class="main">
+            <div class="the_news">
+                <h1>留言板</h1>
+                <div class="talk_place">
+                    <div class="user_talk">
+                        <h3>姓名</h3>
+                        <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
+                    </div>
+                    <div class="user_talk">
+                        <h3>姓名</h3>
+                        <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
+                    </div>
+                    <div class="user_talk">
+                        <h3>姓名</h3>
+                        <p>内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</p>
+                    </div>
+                </div>
+                <div class="talk_page">
+                    <a href="#">上一页</a>
+                    <a href="#">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">下一页</a>
+                    <a href="#">末页</a>
+                </div>
+                <form class="talk_form">
+                    <label for="talk">留言</label>
+                    <textarea id="talk" class="text" onpropertychange="if(value.length>100) value=value.substr(0,100)"></textarea>
+                    <input type="submit" name="submit" class="submit" value="提交">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="#">关于红岩网校</a>|
+        <a href="#">网站地图</a>|
+        <a href="#">指出错误</a>|
+        <a href="#">管理入口</a>
+        <p>本网站由红岩网校工作站负责开发，管理，不经红岩网校委员会书面同意，不得进行转载</p>
+        <p>地址：重庆市南岸区崇文路2号(重庆邮电大学内) 400065 E-mail:redrock@cqupt.edu.cn (023-62461084)</p>
+    </div>
+</div>
+</body>
+<script src="js/showLogin.js"></script>
+<!-- <script src="js/showLogin2.js"></script> -->
+</html>
