@@ -59,15 +59,16 @@ function switch_user(main,username){
     var user_1=document.getElementById('user_1');
     var user_2=document.getElementById('user_2');
     var user_name=document.getElementById('user_name');
-    if(main='user_1'){
+    if(main=='user_1'){
         user_1.style.display='block';
         user_2.style.display='none';
+    }
+    else{
+        user_1.style.display='none';
+        user_2.style.display='block';
+        user_name.innerText=username||'未知';
+        document.getElementById('show').style.display='none';
     };
-    // else{
-    //     user_1.style.display='none';
-    //     user_2.style.display='block';
-    //     user_name.innerText=username;
-    // };
 };
 //获取cookie值,没有则返回空值
 function cookie_get(c_name){
@@ -136,8 +137,8 @@ function showLogin(){
             makeAjax({
                 success:function(response){
                     alert(response);
-                    document.getElementById('user_2').style.display='block';
-                    document.getElementById('user_1').style.display='none';
+//                    document.write(response);
+                    switch_user('user_2');
                 },
                 type:"post",
                 url:"php/login.php",
@@ -147,7 +148,7 @@ function showLogin(){
                     value:"application/x-www-form-urlencoded"
                 }
             });
-            alert(sendValue);
+//            alert(sendValue);
 
             return false;
         }

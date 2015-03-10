@@ -20,7 +20,7 @@
 	$password = md5(md5($password));
 	$response = $DB->login($name,$password);
 	echo "$response";
-	
+	echo "$_COOKIE[username]";
 	// echo $_SESSION['login'];
 	// echo $_SESSION['user_id'];
 	// echo "$_SESSION['name']";
