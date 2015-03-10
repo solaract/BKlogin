@@ -78,18 +78,18 @@
   			if($getPassword===$password){
   				// $_SESSION['password'] = $getPassword;
   				// $_SESSION['name'] = $getName;
-  				$_SESSION['login'] = true;
-  				$_SESSION['user_id'] = $getId;
-          setcookie("name",$getName,time()+24*3600);
-          setcookie("password",$getPassword,time()+24*3600);
-  				echo "登陆成功";
+  				// $_SESSION['login'] = true;
+  				$_SESSION['username'] = $getName;
+          setcookie(session_name(),session_id(),time()+24*3600);
+          // setcookie("password",$getPassword,time()+24*3600);
+  				return true;
   			}
   			else{
-  				echo "密码错误";
+  				return "密码错误";
   			}
    		}
   		else{
-  			echo "用户不存在，请先注册";
+  			return "用户不存在，请先注册";
   		}
   	}
   	function __destruct(){

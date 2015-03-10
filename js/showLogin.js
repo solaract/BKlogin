@@ -31,7 +31,8 @@ function makeAjax(ajaxObj){
     //ajax回调函数  
     xmlhttp.onreadystatechange=function(){
       if (xmlhttp.readyState==4 && xmlhttp.status==200){
-        if(typeof(ajaxObj.success)==='function')ajaxObj.success();
+        var response = xmlhttp.responseText||xmlhttp.responseXML;
+        if(typeof(ajaxObj.success)==='function')ajaxObj.success(response);
         else return;
       }
       else{
@@ -51,6 +52,7 @@ function makeAjax(ajaxObj){
     // multipart/form-data：窗体数据被编码为一条消息，页上的每个控件对应消息中的一个部分。
     // text/plain：窗体数据以纯文本形式进行编码，其中不含任何控件或格式字符
     if(typeof(ajaxObj.setRH)==='object')xmlhttp.setRequestHeader(ajaxObj.setRH.header,ajaxObj.setRH.value);
+    ajaxObj.postSend=ajaxObj.postSend||null;
     xmlhttp.send(ajaxObj.postSend);
 }
 function switch_user(main,username){
@@ -61,12 +63,12 @@ function switch_user(main,username){
         user_1.style.display='block';
         user_2.style.display='none';
     };
-    else{
-        user_1.style.display='none';
-        user_2.style.display='block';
-        user_name.innerText=username;
-    }
-}
+    // else{
+    //     user_1.style.display='none';
+    //     user_2.style.display='block';
+    //     user_name.innerText=username;
+    // };
+};
 //获取cookie值,没有则返回空值
 function cookie_get(c_name){
     var cookie = document.cookie;
@@ -84,7 +86,7 @@ function cookie_get(c_name){
 function cookie_setUser(){
     var username = cookie_getUser('username');
     if(username != null&&username!=''){
-        
+        switch_user('user_2',username);
     }
 }
 //登陆界面
@@ -132,8 +134,8 @@ function showLogin(){
         else {  
             sendValue = 'name='+username.value+'&'+'password='+password.value;
             makeAjax({
-                success:function(){
-                    alert('success');
+                success:function(response){
+                    alert(response);
                     document.getElementById('user_2').style.display='block';
                     document.getElementById('user_1').style.display='none';
                 },
