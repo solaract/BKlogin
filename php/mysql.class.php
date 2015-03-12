@@ -80,9 +80,10 @@
   				// $_SESSION['name'] = $getName;
   				// $_SESSION['login'] = true;
   				$_SESSION['username'] = $name;
-          setcookie('username',$name,time()+24*3600);
+          // setcookie(session_name(),session_id(),time()+24*3600);
+          // setcookie('username',$name,time()+24*3600);
           // setcookie("password",$getPassword,time()+24*3600);
-  				return true;
+  				return 'true';
   			}
   			else{
   				return "密码错误";
