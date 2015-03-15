@@ -40,7 +40,7 @@ function makeAjax(ajaxObj){
         else return;
       }
 
-    }
+    };
     //ajaxObj.type默认值
     if(typeof(ajaxObj.type)!=='string')ajaxObj.type='Get';
     xmlhttp.open(ajaxObj.type,ajaxObj.url,true);
@@ -66,10 +66,20 @@ function switch_user(main,username){
     else{
         user_1.style.display='none';
         user_2.style.display='block';
+        var username=cookie_get('username');
         user_name.innerText=username||'未知';
         document.getElementById('show').style.display='none';
-    };
-};
+    }
+}
+//设置cookie值
+function cookie_set(c_name,c_value,freeTime){
+    var time = new Date();
+    if(!freeTime)freeTime=3600*1000;
+    time.setTime(time.getTime()+freeTime);
+    if(c_name!=''||c_name!=null){
+        document.cookie=c_name+'='+c_value+';expires='+time.toUTCString();
+    }
+}
 //获取cookie值,没有则返回空值
 function cookie_get(c_name){
     var cookie = document.cookie;
@@ -86,7 +96,7 @@ function cookie_get(c_name){
         
     }
     return '';
-};
+}
 //删除cookie
 function cookie_del(c_name){
     var time = new Date();
@@ -133,15 +143,20 @@ function showLogin(){
     };
     // 登录表单验证
     document.getElementById("form_login").onsubmit=function(){
+        var error =document.getElementById('login_error');
         var username=document.getElementById("username");
         var password=document.getElementById("password");
         // var reg=/[0-9]+/;
         if(username.value==''||username.value=='账号'){
-            alert('请正确输入账号');
+//            alert('请正确输入账号');
+            error.innerText='请正确输入账号';
+            error.style.visibility='visible';
             return false;
         }
         else if(password.value==''||password.value=='密码'){
-            alert('请输入密码');
+//            alert('请输入密码');
+            error.innerText='请输入密码';
+            error.style.visibility='visible';
             return false;
         }
        
@@ -150,9 +165,17 @@ function showLogin(){
             makeAjax({
                 success:function(response){
                     response=eval('('+response+')');
-                    console.log(response);
+//                    console.log(response);
                    // document.write(response);
-                    switch_user('user_2');
+                    if(response.is_cookie){
+                        cookie_set('username',response.c_value);
+                        switch_user('user_2');
+                    }
+                    else{
+                        var error =document.getElementById('login_error');
+                        error.innerText=response.c_value;
+                        error.style.visibility='visible';
+                    }
                 },
                 type:"post",
                 url:"php/login.php",
@@ -211,7 +234,6 @@ document.getElementById('user_login').onclick=function(){
     document.getElementById('show').style.display='block';
     showLogin();
 };
-document.getElementById('user_2').style.display='none';
 
 
 

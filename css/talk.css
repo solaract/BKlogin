@@ -41,6 +41,7 @@ ul {
 }
 .login .login_content #user_2 {
   float: right;
+  display: none;
 }
 .login .login_content #user_2 a {
   color: #666666;
@@ -297,8 +298,13 @@ ul {
   color: #333333;
   letter-spacing: 5px;
   width: 55px;
-  margin: 0 auto 22px auto;
+  margin: 0 auto 6px auto;
   -webkit-font-smoothing: antialiased;
+}
+#show .show_login em {
+  padding-left: 71.5px;
+  color: #F00;
+  visibility: hidden;
 }
 #show .show_login form div {
   width: 255px;
