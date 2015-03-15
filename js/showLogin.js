@@ -149,8 +149,9 @@ function showLogin(){
             sendValue = 'name='+username.value+'&'+'password='+password.value;
             makeAjax({
                 success:function(response){
-                    alert(response);
-//                    document.write(response);
+                    response=eval('('+response+')');
+                    console.log(response);
+                   // document.write(response);
                     switch_user('user_2');
                 },
                 type:"post",

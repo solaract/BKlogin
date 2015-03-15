@@ -47,13 +47,15 @@
   		$data = htmlspecialchars($data);
   		return $data;
   	}
+    // 注册
   	public function regist($name,$password){
+      // 预加载
   		$hasNames = $this->dbh->prepare("SELECT `name` FROM `user` where `name` = :name");
-  		$hasNames -> bindParam(':name',$name);
+  		$hasNames->bindParam(':name',$name);
   		$nowNames = $hasNames->execute();
   		$nowNames = $hasNames->fetchAll(PDO::FETCH_OBJ);
   		if($nowNames){
-  			$have = $nowNames[0] -> name;
+  			$have = $nowNames[0]->name;
   		}
   		else{
   			$have=false;
@@ -66,24 +68,30 @@
   			$addInfo -> execute();
   		}	
   	}
+    //登陆
   	public function login($name,$password){
+      //预加载
   		$loginInfo = $this->dbh->prepare("SELECT * FROM `user` where `name` = :name");
-  		$loginInfo -> bindParam(':name',$name);
+      // 赋值
+  		$loginInfo->bindParam(':name',$name);
+      // 执行
   		$getInfo = $loginInfo->execute();
   		$getInfo = $loginInfo->fetchAll(PDO::FETCH_OBJ);
   		if($getInfo){
+        // 加密后对比数据库
   			$getPassword = md5(md5($getInfo[0]->password));
   			$getName = $getInfo[0]->name;
   			$getId = $getInfo[0]->user_id;
   			if($getPassword===$password){
   				// $_SESSION['password'] = $getPassword;
-  				// $_SESSION['name'] = $getName;
+          // 创建session
+  				$_SESSION['name'] = $getName;
   				// $_SESSION['login'] = true;
-  				$_SESSION['username'] = $name;
+  				// $_SESSION['username'] = $name;
           // setcookie(session_name(),session_id(),time()+24*3600);
           // setcookie('username',$name,time()+24*3600);
           // setcookie("password",$getPassword,time()+24*3600);
-  				return 'true';
+  				return true;
   			}
   			else{
   				return "密码错误";

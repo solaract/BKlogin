@@ -19,11 +19,48 @@
 	$password = $DB -> test_input($_POST["password"]);
 	$password = md5(md5($password));
 	$response = $DB->login($name,$password);
-	$_SESSION['username'] = $name;
-	setcookie('username',$name,time()+24*3600);
-	echo "$response";
+	// $_SESSION['username'] = $name;
+	// //有中文值的json编码
+	// function to_json() {
+ //        //url编码,避免json_encode将中文转为unicode
+ //        $this->item2 = urlencode($this->item2);
+ //        //对象json编码
+ //        $str_json = json_encode($this);
+ //        //url解码,转完json后将各属性返回,确保对象属性不变
+ //        $this->item2 = urldecode($this->item2);
+ //        return urldecode($str_json);
+ //    }
+	class c_obj {
+		public $is_cookie;
+		public $c_value;
+		function __construct($bool,$value){
+			$this->is_cookie = $bool;
+			$this->c_value = $value;
+		}
+		function to_json(){
+			$this->c_value = urlencode($this->c_value);
+			$str_json = json_encode($this);
+			$this->c_value = urldecode($this->c_value);
+			return urldecode($str_json);
+		}
+	};
+	// $c_jsont = new c_obj($response,$name);
+	// $c_jsont = json_encode($c_jsont);
+	// echo $c_jsont;
+	if($response===true){
+		setcookie('username',$name,time()+50);
+		$c_jsont = new c_obj($response,$name);
+		$c_jsont = $c_jsont->to_json();
+		echo $c_jsont;
+	}
+	else{
+		$c_jsonf = new c_obj(false,$response);
+		$c_jsonf = $c_jsonf->to_json();
+		echo $c_jsonf;
+	}
+	// echo "$response";
 	// echo "$_COOKIE[username]";
-	// echo $_SESSION['login'];
+	// echo $_SESSION['username'];
 	// echo $_SESSION['user_id'];
 	// echo "$_SESSION['name']";
 	// echo "success";
