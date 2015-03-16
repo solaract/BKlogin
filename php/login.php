@@ -6,7 +6,7 @@
 	// domain:可选，该 cookie 有效的域名
 	// setcookie(name, value, expire, path, domain);
 
-	session_start();
+	session_start();//开启session
 	// header('Content-Type: text/xml');
 	// header("Cache-Control: no-cache, must-revalidate");
 	// date_default_timezone_set('prc');
@@ -17,7 +17,7 @@
 	$DB = mysql::getInstance();//单例模式
 	$name = $DB -> test_input($_POST["name"]);
 	$password = $DB -> test_input($_POST["password"]);
-	$password = md5(md5($password));
+	// $password = md5(md5($password));
 	$response = $DB->login($name,$password);
 	// $_SESSION['username'] = $name;
 	// //有中文值的json编码
@@ -37,6 +37,7 @@
 			$this->is_cookie = $bool;
 			$this->c_value = $value;
 		}
+		// 把有中文值的对象转成json
 		function to_json(){
 			$this->c_value = urlencode($this->c_value);
 			$str_json = json_encode($this);

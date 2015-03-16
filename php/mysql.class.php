@@ -37,6 +37,7 @@
   		}
   		return self::$_instance;
   	}
+    
   	//转换，去掉不合法字符  安全
   	public function test_input($data){
   		//通过 PHP trim() 函数,去除用户输入数据中不必要的字符（多余的空格、制表符、换行)
@@ -54,14 +55,18 @@
   		$hasNames->bindParam(':name',$name);
   		$nowNames = $hasNames->execute();
   		$nowNames = $hasNames->fetchAll(PDO::FETCH_OBJ);
+      // 数据库中是否有这个用户
   		if($nowNames){
   			$have = $nowNames[0]->name;
   		}
   		else{
   			$have=false;
   		}
+      // 没有就把用户名和密码添加进数据库
   		if(!$have){
-  			echo "$name";
+  			// echo "$name";
+        $password = md5(md5($password).'zxy');
+        // echo "$password";
   			$addInfo = $this->dbh->prepare("INSERT INTO `user` (name,password) VALUES (:name,:password)");
   			$addInfo -> bindParam(':name',$name);
   			$addInfo -> bindParam(':password',$password);
@@ -79,9 +84,10 @@
   		$getInfo = $loginInfo->fetchAll(PDO::FETCH_OBJ);
   		if($getInfo){
         // 加密后对比数据库
-  			$getPassword = md5(md5($getInfo[0]->password));
+  			$getPassword = $getInfo[0]->password;
   			$getName = $getInfo[0]->name;
   			$getId = $getInfo[0]->user_id;
+        $password = md5(md5($password).'zxy');
   			if($getPassword===$password){
   				// $_SESSION['password'] = $getPassword;
           // 创建session
