@@ -70,7 +70,7 @@ function switch_user(main,n_json){
         // var username=cookie_get('username');
         var username=n_json.c_value;
         user_name.innerText=username||'未知';
-        document.getElementById('show').style.display='none';
+        document.getElementById('show_1').style.display='none';
     }
 }
 // //设置cookie值
@@ -118,11 +118,12 @@ function cookie_setUser(){
 //登陆界面
 function showLogin(){
     //界面功能
+    var error =document.getElementById('login_error');
     var username= document.getElementById("username");
     var password=  document.getElementById("password");
-    document.getElementById('close').onclick=function(){
-        document.getElementById('show').style.display='none';
-        document.getElementById('login_error').style.visibility='hidden';
+    document.getElementById('login_close').onclick=function(){
+        document.getElementById('show_1').style.display='none';
+        error.style.visibility='hidden';
         username.value='账号';
         password.value='密码';
     };
@@ -150,9 +151,9 @@ function showLogin(){
     };
     // 登录表单验证
     document.getElementById("form_login").onsubmit=function(){
-        var error =document.getElementById('login_error');
-        var username=document.getElementById("username");
-        var password=document.getElementById("password");
+//        var error =document.getElementById('login_error');
+//        var username=document.getElementById("username");
+//        var password=document.getElementById("password");
         // var reg=/[0-9]+/;
         if(username.value==''||username.value=='账号'){
 //            alert('请正确输入账号');
@@ -169,6 +170,7 @@ function showLogin(){
        
         else {  
             sendValue = 'name='+username.value+'&'+'password='+password.value;
+            alert(sendValue);
             makeAjax({
                 success:function(response){
                     // response=eval('('+response+')');兼容性较好但安全性较差
@@ -199,6 +201,93 @@ function showLogin(){
             return false;
         }
        
+    };
+}
+//注册界面
+function showRegist(){
+    //界面功能
+    var username= document.getElementById("re_username");
+    var password=  document.getElementById("re_password");
+    var error =document.getElementById('regist_error');
+    document.getElementById('register_close').onclick=function(){
+        document.getElementById('show_2').style.display='none';
+        error.style.visibility='hidden';
+        username.value='账号';
+        password.value='密码';
+    };
+    username.onfocus=function(){
+        if(this.value=='账号'){
+            this.value='';
+        }
+
+    };
+    username.onblur=function(){
+        if(this.value==''){
+            this.value='账号';
+        }
+
+    };
+    password.onfocus=function(){
+        if(this.value=='密码')
+            this.value='';
+    };
+    password.onblur=function(){
+        if(this.value==''){
+            this.value='密码';
+        }
+
+    };
+    // 注册表单验证
+    document.getElementById("form_regist").onsubmit=function(){
+//        var error =document.getElementById('regist_error');
+//        var username=document.getElementById("re_username");
+//        var password=document.getElementById("re_password");
+        // var reg=/[0-9]+/;
+        if(username.value==''||username.value=='账号'){
+//            alert('请正确输入账号');
+            error.innerText='请正确输入账号';
+            error.style.visibility='visible';
+            return false;
+        }
+        else if(password.value==''||password.value=='密码'){
+//            alert('请输入密码');
+            error.innerText='请输入密码';
+            error.style.visibility='visible';
+            return false;
+        }
+
+        else {
+            sendValue = 'name='+username.value+'&'+'password='+password.value;
+            makeAjax({
+//                success:function(response){
+//                    // response=eval('('+response+')');兼容性较好但安全性较差
+//                    response=JSON.parse(response);//ECMAScript5,低版本json.js支持
+//                    // JSON.stringify(obj); //将JSON对象转化为JSON字符，ECMAScript5,低版本json.js支持
+//                    // console.log(response);
+//                    // document.write(response);
+//                    if(response.is_cookie){
+//                        // cookie_set('username',response.c_value);
+//                        switch_user('user_2',response);
+//                    }
+//                    else{
+//                        var error =document.getElementById('login_error');
+//                        error.innerText=response.c_value;
+//                        error.style.visibility='visible';
+//                    }
+//                },
+                type:"post",
+                url:"php/regist.php",
+                postSend:sendValue,
+                setRH:{
+                    header:"Content-type",
+                    value:"application/x-www-form-urlencoded"
+                }
+            });
+            alert(sendValue);
+
+            return false;
+        }
+
     };
 }
 //作品上传表单验证
@@ -243,8 +332,12 @@ document.getElementById('close_2').onclick=function(){
 };
 //打开登陆界面
 document.getElementById('user_login').onclick=function(){
-    document.getElementById('show').style.display='block';
+    document.getElementById('show_1').style.display='block';
     showLogin();
+};
+document.getElementById('user_register').onclick=function(){
+    document.getElementById('show_2').style.display='block';
+    showRegist();
 };
 
 

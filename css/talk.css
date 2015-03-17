@@ -26,9 +26,6 @@ ul {
 .login .login_content #user_1 {
   float: right;
 }
-.login .login_content #user_1 a {
-  color: #666666;
-}
 .login .login_content #user_1 div {
   display: inline-block;
   margin-top: 4px;
@@ -269,7 +266,7 @@ ul {
 .footer a:hover {
   color: #999999;
 }
-#show {
+.show {
   display: none;
   position: fixed;
   top: 0;
@@ -279,18 +276,18 @@ ul {
   background: rgba(0, 0, 0, 0.5);
   z-index: 101;
 }
-#show .show_login {
+.show .show_login {
   width: 400px;
   height: 250px;
   background-color: #ffffff;
   margin: 130px auto 0 auto;
 }
-#show .show_login img {
+.show .show_login img {
   float: right;
   margin: 10px;
   cursor: pointer;
 }
-#show .show_login h3 {
+.show .show_login h3 {
   font-family: Microsoft Yahei, Arial, sans-serif;
   font-size: 18px;
   text-align: center;
@@ -301,12 +298,12 @@ ul {
   margin: 0 auto 6px auto;
   -webkit-font-smoothing: antialiased;
 }
-#show .show_login em {
+.show .show_login em {
   padding-left: 71.5px;
   color: #F00;
   visibility: hidden;
 }
-#show .show_login form div {
+.show .show_login form div {
   width: 255px;
   height: 32px;
   border: solid 1px #e4e4e4;
@@ -318,11 +315,11 @@ ul {
   border-radius: 3px;
   /* W3C syntax */
 }
-#show .show_login form div img {
+.show .show_login form div img {
   margin: 4px 8px 0 8px;
   float: left;
 }
-#show .show_login form div input {
+.show .show_login form div input {
   margin-top: 4px;
   width: 209px;
   height: 22px;
@@ -334,7 +331,7 @@ ul {
   outline: none;
   text-indent: 1em;
 }
-#show .show_login form .sub {
+.show .show_login form .sub {
   display: block;
   background-color: #1b97e3;
   filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColorStr=#1ea3e6, endColorStr=#1788df);
