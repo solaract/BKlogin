@@ -7,9 +7,9 @@
 </head>
 <body>
 <div class="page">
-    <div id="show">
+    <div id="show_1" class="show">
         <div class="show_login">
-            <img id="close" src="img/close.png">
+            <img id="login_close" src="img/close.png">
             <h3>登录</h3>
             <em id="login_error"></em>
             <form id="form_login" action="#" autocomplete="on" method="post">
@@ -22,6 +22,24 @@
                     <input id="password" name="password" type="text" value="密码">
                 </div>
                 <input class="sub" type="submit" value="登录" >
+            </form>
+        </div>
+    </div>
+    <div id="show_2" class="show">
+        <div class="show_login">
+            <img id="register_close" src="img/close.png">
+            <h3>注册</h3>
+            <em id="regist_error"></em>
+            <form id="form_regist" action="#" autocomplete="on" method="post">
+                <div class="user">
+                    <img src="img/iconfont-yonghu%20(1).png">
+                    <input id="re_username" name="name" type="text" value="账号">
+                </div>
+                <div class="password">
+                    <img src="img/iconfont-mima.png">
+                    <input id="re_password" name="password" type="text" value="密码">
+                </div>
+                <input class="sub" type="submit" value="注册" >
             </form>
         </div>
     </div>
@@ -47,8 +65,7 @@
         <div class="login_content">
             <div id="user_1">
                 <div id="user_login">用户登录</div>
-                <a href="#"><div id="user_register">用户注册</div>
-                </a>
+                <div id="user_register">用户注册</div>
             </div>
             <div id="user_2">
                 <div id="user_name">用户名</div>
