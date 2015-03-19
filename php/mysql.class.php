@@ -48,30 +48,32 @@
   		$data = htmlspecialchars($data);
   		return $data;
   	}
+    //检查数据库中是否有这个用户
+    public function test_name($name){
+      // 预加载
+      $hasNames = $this->dbh->prepare("SELECT `name` FROM `user` where `name` = :name");
+      $hasNames->bindParam(':name',$name);
+      $nowNames = $hasNames->execute();
+      $nowNames = $hasNames->fetchAll(PDO::FETCH_OBJ);
+      // 数据库中是否有这个用户
+      if($nowNames){
+        $have = "该用户已存在";
+      }
+      else{
+        $have=false;
+      }
+    }
     // 注册
   	public function regist($name,$password){
-      // 预加载
-  		$hasNames = $this->dbh->prepare("SELECT `name` FROM `user` where `name` = :name");
-  		$hasNames->bindParam(':name',$name);
-  		$nowNames = $hasNames->execute();
-  		$nowNames = $hasNames->fetchAll(PDO::FETCH_OBJ);
-      // 数据库中是否有这个用户
-  		if($nowNames){
-  			$have = $nowNames[0]->name;
-  		}
-  		else{
-  			$have=false;
-  		}
-      // 没有就把用户名和密码添加进数据库
-  		if(!$have){
+      
+      // 把用户名和密码添加进数据库
   			// echo "$name";
-        $password = md5(md5($password).'zxy');
+      $password = md5(md5($password).'zxy');
         // echo "$password";
-  			$addInfo = $this->dbh->prepare("INSERT INTO `user` (name,password) VALUES (:name,:password)");
-  			$addInfo -> bindParam(':name',$name);
-  			$addInfo -> bindParam(':password',$password);
-  			$addInfo -> execute();
-  		}	
+  		$addInfo = $this->dbh->prepare("INSERT INTO `user` (name,password) VALUES (:name,:password)");
+  		$addInfo -> bindParam(':name',$name);
+  		$addInfo -> bindParam(':password',$password);
+  		$addInfo -> execute();
   	}
     //登陆
   	public function login($name,$password){

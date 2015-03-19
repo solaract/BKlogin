@@ -121,6 +121,7 @@ function showLogin(){
     var error =document.getElementById('login_error');
     var username= document.getElementById("username");
     var password=  document.getElementById("password");
+    var reg=/\w+/;
     document.getElementById('login_close').onclick=function(){
         document.getElementById('show_1').style.display='none';
         error.style.visibility='hidden';
@@ -137,17 +138,28 @@ function showLogin(){
         if(this.value==''){
             this.value='账号';
         }
-
+        else if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
+//            alert('请正确输入账号');
+            error.innerText='请正确输入账号';
+            error.style.visibility='visible';
+            // return false;
+        }
     };
     password.onfocus=function(){
         if(this.value=='密码')
-        this.value='';
+            this.value='';
     };
     password.onblur=function(){
         if(this.value==''){
             this.value='密码';
+        };
+        if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
+            error.innerText='请输入密码';
+            error.style.visibility='visible';
         }
-
+        else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
+            error.style.visibility='visibility';
+        }
     };
     // 登录表单验证
     document.getElementById("form_login").onsubmit=function(){
@@ -155,13 +167,13 @@ function showLogin(){
 //        var username=document.getElementById("username");
 //        var password=document.getElementById("password");
         // var reg=/[0-9]+/;
-        if(username.value==''||username.value=='账号'){
+        if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
 //            alert('请正确输入账号');
             error.innerText='请正确输入账号';
             error.style.visibility='visible';
             return false;
         }
-        else if(password.value==''||password.value=='密码'){
+        else if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
 //            alert('请输入密码');
             error.innerText='请输入密码';
             error.style.visibility='visible';
@@ -209,6 +221,7 @@ function showRegist(){
     var username= document.getElementById("re_username");
     var password=  document.getElementById("re_password");
     var error =document.getElementById('regist_error');
+    var reg=/\w+/;
     document.getElementById('register_close').onclick=function(){
         document.getElementById('show_2').style.display='none';
         error.style.visibility='hidden';
@@ -225,7 +238,36 @@ function showRegist(){
         if(this.value==''){
             this.value='账号';
         }
-
+        else if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
+//            alert('请正确输入账号');
+            error.innerText='请正确输入账号';
+            error.style.visibility='visible';
+            // return false;
+        }
+        else{
+            error.style.visibility='hidden';
+            alert(1);
+            sendValue = 'name='+username.value;
+            makeAjax({
+               success:function(response){
+                   // response=JSON.parse(response);//ECMAScript5,低版本json.js支持
+                   if(response){
+                        // alert(response);
+                        document.write(response);
+                        var error =document.getElementById('regist_error'); 
+                        error.innerText=response;
+                        error.style.visibility='visible';
+                   }
+               },
+                type:"post",
+                url:"php/regist.php",
+                postSend:sendValue,
+                setRH:{
+                    header:"Content-type",
+                    value:"application/x-www-form-urlencoded"
+                }
+            });
+        }
     };
     password.onfocus=function(){
         if(this.value=='密码')
@@ -234,8 +276,14 @@ function showRegist(){
     password.onblur=function(){
         if(this.value==''){
             this.value='密码';
+        };
+        if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
+            error.innerText='请输入密码';
+            error.style.visibility='visible';
         }
-
+        else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
+            error.style.visibility='visibility';
+        }
     };
     // 注册表单验证
     document.getElementById("form_regist").onsubmit=function(){
@@ -243,13 +291,13 @@ function showRegist(){
 //        var username=document.getElementById("re_username");
 //        var password=document.getElementById("re_password");
         // var reg=/[0-9]+/;
-        if(username.value==''||username.value=='账号'){
+        if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
 //            alert('请正确输入账号');
             error.innerText='请正确输入账号';
             error.style.visibility='visible';
             return false;
         }
-        else if(password.value==''||password.value=='密码'){
+        else if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
 //            alert('请输入密码');
             error.innerText='请输入密码';
             error.style.visibility='visible';
@@ -259,22 +307,26 @@ function showRegist(){
         else {
             sendValue = 'name='+username.value+'&'+'password='+password.value;
             makeAjax({
-//                success:function(response){
-//                    // response=eval('('+response+')');兼容性较好但安全性较差
-//                    response=JSON.parse(response);//ECMAScript5,低版本json.js支持
-//                    // JSON.stringify(obj); //将JSON对象转化为JSON字符，ECMAScript5,低版本json.js支持
-//                    // console.log(response);
-//                    // document.write(response);
-//                    if(response.is_cookie){
-//                        // cookie_set('username',response.c_value);
-//                        switch_user('user_2',response);
-//                    }
-//                    else{
-//                        var error =document.getElementById('login_error');
-//                        error.innerText=response.c_value;
-//                        error.style.visibility='visible';
-//                    }
-//                },
+               success:function(response){
+                   // response=eval('('+response+')');兼容性较好但安全性较差
+                   // response=JSON.parse(response);//ECMAScript5,低版本json.js支持
+                   // JSON.stringify(obj); //将JSON对象转化为JSON字符，ECMAScript5,低版本json.js支持
+                   // console.log(response);
+                   // document.write(response);
+                   if(response){
+                        // alert(response);
+                        var error =document.getElementById('regist_error');
+                        error.innerText=response;
+                        error.style.visibility='visible';
+                       // cookie_set('username',response.c_value);
+                       // switch_user('user_2',response);
+                   }
+                   // else{
+                   //     var error =document.getElementById('login_error');
+                   //     error.innerText=response.c_value;
+                   //     error.style.visibility='visible';
+                   // }
+               },
                 type:"post",
                 url:"php/regist.php",
                 postSend:sendValue,
@@ -283,9 +335,9 @@ function showRegist(){
                     value:"application/x-www-form-urlencoded"
                 }
             });
-            alert(sendValue);
+            // alert(sendValue);
 
-            return false;
+            // return false;
         }
 
     };
