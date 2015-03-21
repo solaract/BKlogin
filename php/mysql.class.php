@@ -57,11 +57,12 @@
       $nowNames = $hasNames->fetchAll(PDO::FETCH_OBJ);
       // 数据库中是否有这个用户
       if($nowNames){
-        $have = "该用户已存在";
+        $have = true;
       }
       else{
         $have=false;
       }
+      return $have;
     }
     // 注册
   	public function regist($name,$password){

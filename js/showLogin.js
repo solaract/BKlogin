@@ -121,12 +121,16 @@ function showLogin(){
     var error =document.getElementById('login_error');
     var username= document.getElementById("username");
     var password=  document.getElementById("password");
+    //数字字母和下划线
     var reg=/\w+/;
     document.getElementById('login_close').onclick=function(){
         document.getElementById('show_1').style.display='none';
+        //关闭时重置
+        error.innerText='';
         error.style.visibility='hidden';
         username.value='账号';
         password.value='密码';
+        password.type='text';
     };
     username.onfocus=function(){
         if(this.value=='账号'){
@@ -138,8 +142,9 @@ function showLogin(){
         if(this.value==''){
             this.value='账号';
         }
-        else if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
-//            alert('请正确输入账号');
+        //账号格式不对时显示错误信息
+        else if(username.value.length<=6||!reg.test(username.value)){
+           // alert('请正确输入账号');
             error.innerText='请正确输入账号';
             error.style.visibility='visible';
             // return false;
@@ -148,18 +153,23 @@ function showLogin(){
     password.onfocus=function(){
         if(this.value=='密码')
             this.value='';
+        //输入时改为密文
+            this.type='password';
     };
     password.onblur=function(){
-        if(this.value==''){
+        if(this.value==''){          
             this.value='密码';
-        };
-        if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
+            //未输入时改为明文
+            this.type='text';
+        }
+        //密码格式不对时显示错误信息
+        if(password.value.length<=6||!reg.test(password.value)){
             error.innerText='请输入密码';
             error.style.visibility='visible';
         }
-        else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
-            error.style.visibility='visibility';
-        }
+        // else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
+        //     error.style.visibility='visible';
+        // }
     };
     // 登录表单验证
     document.getElementById("form_login").onsubmit=function(){
@@ -167,13 +177,14 @@ function showLogin(){
 //        var username=document.getElementById("username");
 //        var password=document.getElementById("password");
         // var reg=/[0-9]+/;
-        if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
+        //submit前检查账号密码是否规范，return false中止submit
+        if(username.value.length<=6||!reg.test(username.value)){
 //            alert('请正确输入账号');
             error.innerText='请正确输入账号';
             error.style.visibility='visible';
             return false;
         }
-        else if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
+        else if(password.value.length<=6||!reg.test(username.value)){
 //            alert('请输入密码');
             error.innerText='请输入密码';
             error.style.visibility='visible';
@@ -190,10 +201,13 @@ function showLogin(){
                     // JSON.stringify(obj); //将JSON对象转化为JSON字符，ECMAScript5,低版本json.js支持
                    // console.log(response);
                    // document.write(response);
+                   //判断是否登陆成功
                     if(response.is_cookie){
                         // cookie_set('username',response.c_value);
+                        //切换到已登录状态
                         switch_user('user_2',response);
                     }
+                    //否则显示返回的错误信息
                     else{
                         var error =document.getElementById('login_error');
                         error.innerText=response.c_value;
@@ -205,11 +219,12 @@ function showLogin(){
                 postSend:sendValue,
                 setRH:{
                     header:"Content-type",
+                    //发送格式为form默认格式
                     value:"application/x-www-form-urlencoded"
                 }
             });
 //            alert(sendValue);
-
+        //取消默认提交方式
             return false;
         }
        
@@ -223,10 +238,13 @@ function showRegist(){
     var error =document.getElementById('regist_error');
     var reg=/\w+/;
     document.getElementById('register_close').onclick=function(){
+        //关闭时重置
         document.getElementById('show_2').style.display='none';
+        error.innerText='';
         error.style.visibility='hidden';
         username.value='账号';
         password.value='密码';
+        password.value='text';
     };
     username.onfocus=function(){
         if(this.value=='账号'){
@@ -238,22 +256,26 @@ function showRegist(){
         if(this.value==''){
             this.value='账号';
         }
-        else if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
+        else if(username.value.length<=6||!reg.test(username.value)){
 //            alert('请正确输入账号');
             error.innerText='请正确输入账号';
             error.style.visibility='visible';
             // return false;
         }
+        //查询用户名是否可用
         else{
+            //重置error
             error.style.visibility='hidden';
-            alert(1);
+            error.innerText='';
+            // alert(1);
             sendValue = 'name='+username.value;
             makeAjax({
                success:function(response){
                    // response=JSON.parse(response);//ECMAScript5,低版本json.js支持
+                   //显示错误信息，注册失败
                    if(response){
-                        // alert(response);
-                        document.write(response);
+                        // alert(response); 
+                        // document.write(response);
                         var error =document.getElementById('regist_error'); 
                         error.innerText=response;
                         error.style.visibility='visible';
@@ -264,6 +286,7 @@ function showRegist(){
                 postSend:sendValue,
                 setRH:{
                     header:"Content-type",
+                    //发送格式为form默认格式
                     value:"application/x-www-form-urlencoded"
                 }
             });
@@ -272,18 +295,22 @@ function showRegist(){
     password.onfocus=function(){
         if(this.value=='密码')
             this.value='';
+            //输入时改为密文
+            this.type='password';
     };
     password.onblur=function(){
         if(this.value==''){
             this.value='密码';
-        };
-        if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
+            //未输入时改为明文
+            this.type='text';
+        }
+        else if(password.value.length<=6||!reg.test(password.value)){
             error.innerText='请输入密码';
             error.style.visibility='visible';
         }
-        else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
-            error.style.visibility='visibility';
-        }
+        // else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
+        //     error.style.visibility='visible';
+        // }
     };
     // 注册表单验证
     document.getElementById("form_regist").onsubmit=function(){
@@ -291,13 +318,14 @@ function showRegist(){
 //        var username=document.getElementById("re_username");
 //        var password=document.getElementById("re_password");
         // var reg=/[0-9]+/;
-        if(username.value.length<=6||username.value=='账号'||!reg.test(username.value)){
+        //submit前检查账号密码是否规范，return false中止submit
+        if(username.value.length<=6||!reg.test(username.value)){
 //            alert('请正确输入账号');
             error.innerText='请正确输入账号';
             error.style.visibility='visible';
             return false;
         }
-        else if(password.value.length<=6||password.value=='密码'||!reg.test(username.value)){
+        else if(password.value.length<=6||!reg.test(username.value)){
 //            alert('请输入密码');
             error.innerText='请输入密码';
             error.style.visibility='visible';
@@ -336,8 +364,8 @@ function showRegist(){
                 }
             });
             // alert(sendValue);
-
-            // return false;
+            //取消默认提交方式
+            return false;
         }
 
     };
@@ -382,15 +410,16 @@ document.getElementById('user_upload').onclick=function(){
 document.getElementById('close_2').onclick=function(){
     document.getElementById('upload').style.display='none';
 };
+
 //打开登陆界面
 document.getElementById('user_login').onclick=function(){
     document.getElementById('show_1').style.display='block';
     showLogin();
 };
+//打开注册界面
 document.getElementById('user_register').onclick=function(){
     document.getElementById('show_2').style.display='block';
     showRegist();
 };
-
 
 
