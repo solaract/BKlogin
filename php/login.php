@@ -17,6 +17,14 @@
 	$DB = mysql::getInstance();//单例模式
 	$name = $DB -> test_input($_POST["name"]);
 	$password = $DB -> test_input($_POST["password"]);
+	if(strlen($name)<=6||!$DB->reg_test($name)){
+		echo "请正确输入账号";
+		exit();
+	};
+	if(strlen($password)<=6||!$DB->reg_test($password)){
+		echo "请输入密码";
+		exit();
+	};
 	// $password = md5(md5($password));
 	$response = $DB->login($name,$password);
 	// $_SESSION['username'] = $name;

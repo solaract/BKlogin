@@ -48,6 +48,11 @@
   		$data = htmlspecialchars($data);
   		return $data;
   	}
+    public function reg_test($str){
+      $reg='/\w+/';
+      $result=preg_match($reg,$str);
+      return $result;
+    }
     //检查数据库中是否有这个用户
     public function test_name($name){
       // 预加载

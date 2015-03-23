@@ -12,8 +12,13 @@
 	// else{
 	// 	echo "用户名可用";
 	// }
+	
 	if($name){
 		$name = $DB -> test_input($_POST["name"]);
+		if(strlen($name)<=6||!$DB->reg_test($name)){
+			echo "请正确输入账号";
+			exit();
+		};
 		$have = $DB->test_name($name);
 		//用户名是否被注册
 		// echo $have;
@@ -27,6 +32,10 @@
 			//输入密码
 			if($password){
 				$password = $DB -> test_input($_POST["password"]);
+				if(strlen($password)<=6||!$DB->reg_test($password)){
+					echo "请输入密码";
+					exit();
+				};
 				$DB->regist($name,$password);
 			}
 			//返回用户未被注册信息

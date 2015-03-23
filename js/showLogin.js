@@ -193,7 +193,7 @@ function showLogin(){
        
         else {  
             sendValue = 'name='+username.value+'&'+'password='+password.value;
-            alert(sendValue);
+            // alert(sendValue);
             makeAjax({
                 success:function(response){
                     // response=eval('('+response+')');兼容性较好但安全性较差
@@ -308,17 +308,17 @@ function showRegist(){
             error.innerText='请输入密码';
             error.style.visibility='visible';
         }
-        // else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
-        //     error.style.visibility='visible';
-        // }
+        else if(username.value.length>6||username.value!='账号'||reg.test(username.value)){
+            error.style.visibility='visible';
+        }
     };
     // 注册表单验证
     document.getElementById("form_regist").onsubmit=function(){
-//        var error =document.getElementById('regist_error');
-//        var username=document.getElementById("re_username");
-//        var password=document.getElementById("re_password");
-        // var reg=/[0-9]+/;
-        //submit前检查账号密码是否规范，return false中止submit
+       var error =document.getElementById('regist_error');
+       var username=document.getElementById("re_username");
+       var password=document.getElementById("re_password");
+        var reg=/[0-9]+/;
+        // submit前检查账号密码是否规范，return false中止submit
         if(username.value.length<=6||!reg.test(username.value)){
 //            alert('请正确输入账号');
             error.innerText='请正确输入账号';
@@ -343,6 +343,7 @@ function showRegist(){
                    // document.write(response);
                    if(response){
                         // alert(response);
+                        // document.write(response);
                         var error =document.getElementById('regist_error');
                         error.innerText=response;
                         error.style.visibility='visible';
