@@ -280,6 +280,7 @@ ul {
   width: 400px;
   height: 250px;
   background-color: #ffffff;
+  position: relative;
   margin: 130px auto 0 auto;
 }
 .show .show_login img {
