@@ -197,10 +197,11 @@ function showLogin(){
             makeAjax({
                 success:function(response){
                     // response=eval('('+response+')');兼容性较好但安全性较差
+                    // document.write(response);
                     response=JSON.parse(response);//ECMAScript5,低版本json.js支持
                     // JSON.stringify(obj); //将JSON对象转化为JSON字符，ECMAScript5,低版本json.js支持
                    // console.log(response);
-                   // document.write(response);
+                   
                    //判断是否登陆成功
                     if(response.is_cookie){
                         // cookie_set('username',response.c_value);
@@ -422,5 +423,24 @@ document.getElementById('user_register').onclick=function(){
     document.getElementById('show_2').style.display='block';
     showRegist();
 };
-
+window.onload=function(){
+    // alert(1);
+    var sendValue = 'testLogin=ture';
+    makeAjax({
+        success:function(response){
+            // document.write(response);
+            if(response){
+                response=JSON.parse(response);
+                switch_user('user_2',response);
+            }
+        },
+        type:"post",
+        url:"php/login.php",
+        postSend:sendValue,
+        setRH:{
+            header:"Content-type",
+            value:"application/x-www-form-urlencoded"
+        }
+    });
+};
 

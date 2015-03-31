@@ -12,6 +12,33 @@
 	// date_default_timezone_set('prc');
 	// $time = time();
 	// echo "$time";
+	class c_obj {
+		public $is_cookie;
+		public $c_value;
+		function __construct($bool,$value){
+			$this->is_cookie = $bool;
+			$this->c_value = $value;
+		}
+		// 把有中文值的对象转成json
+		function to_json(){
+			$this->c_value = urlencode($this->c_value);
+			$str_json = json_encode($this);
+			$this->c_value = urldecode($this->c_value);
+			return urldecode($str_json);
+		}
+	};
+	if(isset($_SESSION['name'])){
+		$username=$_SESSION['name'];
+		// echo "$username";
+		setcookie('username',$username,time()+50);
+		$c_jsont = new c_obj(true,$username);
+		$c_jsont = $c_jsont->to_json();
+		echo $c_jsont;
+		exit();
+	}
+	if(isset($_POST["testLogin"])){
+		exit();
+	}
 	require_once('mysql.class.php');
 
 	$DB = mysql::getInstance();//单例模式
@@ -38,21 +65,7 @@
  //        $this->item2 = urldecode($this->item2);
  //        return urldecode($str_json);
  //    }
-	class c_obj {
-		public $is_cookie;
-		public $c_value;
-		function __construct($bool,$value){
-			$this->is_cookie = $bool;
-			$this->c_value = $value;
-		}
-		// 把有中文值的对象转成json
-		function to_json(){
-			$this->c_value = urlencode($this->c_value);
-			$str_json = json_encode($this);
-			$this->c_value = urldecode($this->c_value);
-			return urldecode($str_json);
-		}
-	};
+	
 	// $c_jsont = new c_obj($response,$name);
 	// $c_jsont = json_encode($c_jsont);
 	// echo $c_jsont;
