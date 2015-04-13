@@ -53,6 +53,26 @@
       $result=preg_match($reg,$str);
       return $result;
     }
+    //计算字符串编码长度（中文=2，英文=1）
+    public function strCodeLen($str){
+      // mb_strlen($str,'utf-8');utf-8下字符串长度，如'速度'的长度为2
+      //字符串长度  utf-8中文占3位，GBK中文占2位  如'速度'的长度为6
+      $len = strlen($str);
+      for($count = 0,$i = 0;$i<$len;){
+        //将i索引处的字符转成ASCII码
+        $code = ord($str{$i});
+        if($code>=0&&$code<=128){
+          $count+=1;
+          $i+=1;
+        } 
+        else{
+          $count+=2;
+          //utf-8中文占3位，
+          $i+=3;
+        };
+      };
+      return $count;
+    }
     //检查数据库中是否有这个用户
     public function test_name($name){
       // 预加载
@@ -88,7 +108,7 @@
       // 赋值
   		$loginInfo->bindParam(':name',$name);
       // 执行
-  		$getInfo = $loginInfo->execute();
+  		$loginInfo->execute();
   		$getInfo = $loginInfo->fetchAll(PDO::FETCH_OBJ);
   		if($getInfo){
         // 加密后对比数据库
@@ -115,10 +135,58 @@
   			return "用户不存在，请先注册";
   		}
   	}
+    //添加评论
+    public function addCom($name,$str){
+      // date_default_timezone_set("Asia/Shanghai");
+      //查询用户ID
+      //预加载
+      $idInfo = $this->dbh->prepare("SELECT user_id FROM `user` where `name` = :name");
+      // 赋值
+      $idInfo->bindParam(':name',$name);
+      // 执行
+      $idInfo->execute();
+      $getIdInfo = $idInfo->fetchAll(PDO::FETCH_OBJ);
+      if($getIdInfo){
+        //向表中添加评论
+        $getId = $getIdInfo[0]->user_id;
+        // $time = date("Y-n-d H:i:sa");
+        $addInfo = $this->dbh->prepare("INSERT INTO comment (content,uid) VALUES (:content,:uid)");
+        $addInfo->bindParam(':content',$str);
+        $addInfo->bindParam(':uid',$getId);
+        $addInfo->execute();
+        return "评论成功";
+      }
+      else{
+        return "用户不存在，请先注册";
+      }
+    }
+    public function page(){
+      //预加载
+      $comInfo = $this->dbh->prepare("SELECT * FROM `comment`");
+      // 执行
+      $comInfo->execute();
+      $getComInfo = $comInfo->fetchAll(PDO::FETCH_OBJ);
+      $all = count($getComInfo);
+      $page = ceil($all/5);
+      return $page;
+    }
+    public function getCom($page,$num){
+      $index = ($page-1)*$num;
+      var_dump($index);
+      //预加载
+      $comInfo = $this->dbh->prepare("SELECT * FROM `comment` LIMIT :index,:num");
+      // 赋值
+      $comInfo->bindParam(':index',$index);
+      var_dump($index);
+      $comInfo->bindParam(':num',$num);
+      // 执行
+      $comInfo->execute();
+      $getComInfo = $comInfo->fetchAll(PDO::FETCH_OBJ);
+      return $getComInfo;
+    }
   	function __destruct(){
   		$this->dbh = null;
   	}
-  	
   }
   // $DB = mysql::getInstance();
 ?>

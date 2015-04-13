@@ -42,7 +42,7 @@ function makeAjax(ajaxObj){
 
     };
     //ajaxObj.type默认值
-    if(typeof(ajaxObj.type)!=='string')ajaxObj.type='Get';
+    if(typeof(ajaxObj.type)!=='string')ajaxObj.type='GET';
     xmlhttp.open(ajaxObj.type,ajaxObj.url,true);
     // xmlhttp.open("POST","ajax_test.asp",true);
     // xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -55,6 +55,23 @@ function makeAjax(ajaxObj){
     ajaxObj.postSend=ajaxObj.postSend||null;
     xmlhttp.send(ajaxObj.postSend);
 }
+//计算字符串编码长度（中文=2，英文=1）
+var strCodeLen=function(str){
+    var count=0;
+    var len=str.length;
+    var code;
+    for(var i=0;i<len;i++){
+        //将i索引处的字符转成ASCII码
+        code=str.charCodeAt(i);
+        if(code>=0&&code<=128){
+            count+=1;
+        }
+        else{
+            count+=2;
+        }
+    }
+    return count;
+};
 //切换登陆栏和用户栏
 function switch_user(main,n_json){
     var user_1=document.getElementById('user_1');
@@ -109,12 +126,12 @@ function switch_user(main,n_json){
 //     }
 // }
 //切换导航user栏
-function cookie_setUser(){
-    var username = cookie_getUser('username');
-    if(username != null&&username!=''){
-        switch_user('user_2',username);
-    }
-}
+// function cookie_setUser(){
+//     var username = cookie_getUser('username');
+//     if(username != null&&username!=''){
+//         switch_user('user_2',username);
+//     }
+// }
 //登陆界面
 function showLogin(){
     //界面功能
@@ -215,7 +232,7 @@ function showLogin(){
                         error.style.visibility='visible';
                     }
                 },
-                type:"post",
+                type:"POST",
                 url:"php/login.php",
                 postSend:sendValue,
                 setRH:{
@@ -282,7 +299,7 @@ function showRegist(){
                         error.style.visibility='visible';
                    }
                },
-                type:"post",
+                type:"POST",
                 url:"php/regist.php",
                 postSend:sendValue,
                 setRH:{
@@ -357,7 +374,7 @@ function showRegist(){
                    //     error.style.visibility='visible';
                    // }
                },
-                type:"post",
+                type:"POST",
                 url:"php/regist.php",
                 postSend:sendValue,
                 setRH:{
@@ -371,6 +388,51 @@ function showRegist(){
         }
 
     };
+}
+(function(){
+    var len=0;
+    document.getElementById('talk').onkeydown=function(e){
+        var codLen = strCodeLen(this.value);    
+        if(codLen<=375){
+            len = this.value.length;        
+        }
+        if(codLen>=375&&e.keyCode!==8){
+            // alert(len);
+            console.log(codLen);
+            console.log(len);
+            this.value=this.value.substring(0,len);
+            return false;
+        };
+        
+    };
+})()
+
+document.getElementById('talk_form').onsubmit=function(){
+    var talk=document.getElementById('talk');
+    var content=talk.value;
+    var len=strCodeLen(content);
+    if(document.getElementById('user_2').style.display==='none'){
+        alert('请先登录！')
+    }
+    else if (len>=376) {
+        alert('超出限制长度！'+codLen);
+    }
+    else if(content===''){
+        alert("评论不能为空！")
+    }
+    else{
+        makeAjax({
+            success:function(response){
+                if(response){
+                    alert(response);
+                    // document.write(response);
+                }
+            },
+            type:"GET",
+            url:"php/addCom.php?content="+content
+        });
+    };
+    return false;
 }
 //作品上传表单验证
 function upFile(){
